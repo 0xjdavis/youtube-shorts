@@ -1,8 +1,8 @@
-# 🎈 Blank app template
+# 🎈 YouTube Playlists
 
-A simple Streamlit app template for you to modify!
+A simple Streamlit app that queries the YouTube API and list all playlists and the videos in those playlists for a particular YouTube Channel!
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://youtube-playlists.streamlit.app/)
 
 ### How to run it on your own machine
 
