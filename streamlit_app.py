@@ -81,7 +81,8 @@ if channel_id:
             st.dataframe(pd.DataFrame([playlist_details]))
 
             videos = get_playlist_videos(playlist['id'])
-
+            st.write(videos)
+            
             if videos:
                 video_data = [
                     {
