@@ -47,6 +47,7 @@ if st.button("Fetch YouTube Shorts"):
             st.success(f"Found {len(videos_df)} YouTube Shorts videos!")
 
             st.dataframe(videos_df)
+            csv = videos_df.to_csv(index=False).encode('utf-8')
             
             # Display videos in a grid
             cols = st.columns(3)
@@ -66,4 +67,3 @@ if st.button("Fetch YouTube Shorts"):
 
 st.sidebar.header("About")
 st.sidebar.info("This app fetches and displays YouTube Shorts videos from a specified channel using the YouTube Data API.")
-st.sidebar.warning("Note: You need a valid YouTube API Key to use this app.")
