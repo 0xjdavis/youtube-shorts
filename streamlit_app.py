@@ -13,7 +13,7 @@ def get_youtube_short_videos(api_key, channel_id):
             channelId=channel_id,
             type="video",
             videoDuration="short",
-            maxResults=50
+            maxResults=200
         )
         response = request.execute()
 
@@ -36,7 +36,7 @@ def get_youtube_short_videos(api_key, channel_id):
 st.title("YouTube Shorts Viewer")
 
 # Input fields
-api_key = st.text_input("Enter your YouTube API Key")
+api_key = st.secrets["youtube-key"] #st.text_input("Enter your YouTube API Key")
 channel_id = st.text_input("Enter the YouTube Channel ID")
 
 if st.button("Fetch YouTube Shorts"):
@@ -45,6 +45,8 @@ if st.button("Fetch YouTube Shorts"):
         
         if not videos_df.empty:
             st.success(f"Found {len(videos_df)} YouTube Shorts videos!")
+
+            st.dataframe(videos_df)
             
             # Display videos in a grid
             cols = st.columns(3)
@@ -55,6 +57,8 @@ if st.button("Fetch YouTube Shorts"):
                     st.write(f"Published: {video['published_at']}")
                     video_url = f"https://www.youtube.com/shorts/{video['video_id']}"
                     st.markdown(f"[Watch Video]({video_url})")
+
+        
         else:
             st.warning("No YouTube Shorts videos found for this channel.")
     else:
