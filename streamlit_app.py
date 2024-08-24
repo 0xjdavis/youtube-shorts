@@ -36,7 +36,7 @@ def get_youtube_short_videos(api_key, channel_id):
 st.title("YouTube Shorts Viewer")
 
 # Input fields
-api_key = st.secrets["youtube-key"] #st.text_input("Enter your YouTube API Key")
+api_key = st.secrets["youtube_key"] #st.text_input("Enter your YouTube API Key")
 channel_id = st.text_input("Enter the YouTube Channel ID")
 
 if st.button("Fetch YouTube Shorts"):
