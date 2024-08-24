@@ -3,12 +3,12 @@ import pandas as pd
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-
+api_key=st.secrets["youtube_key"]
 
 # Function to get YouTube Shorts videos
 def get_youtube_short_videos(api_key, channel_id):
     youtube = build('youtube', 'v3', developerKey=api_key)
-    #shorts = []
+    shorts = []
     next_page_token = None
     
     try:
@@ -22,7 +22,7 @@ def get_youtube_short_videos(api_key, channel_id):
         )
         response = request.execute()
         
-        #shorts.extend(response['items'])
+        shorts.extend(response['items'])
         next_page_token = response.get('nextPageToken')
 
         videos = []
@@ -36,7 +36,6 @@ def get_youtube_short_videos(api_key, channel_id):
             videos.append(video)
 
         return pd.DataFrame(videos)
-        
     except HttpError as e:
         st.error(f"An error occurred: {e}")
         return pd.DataFrame()
@@ -74,9 +73,9 @@ if st.button("Get Shorts"):
                     video_url = f"https://www.youtube.com/shorts/{video['video_id']}"
                     st.markdown(f"[Watch Video]({video_url})")
 
-            
-            else:
-                st.warning("No YouTube Shorts videos found for this channel.")
+        
+        else:
+            st.warning("No YouTube Shorts videos found for this channel.")
     else:
         st.warning("Please enter both the API Key and Channel ID.")
 
