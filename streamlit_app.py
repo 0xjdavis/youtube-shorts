@@ -8,6 +8,8 @@ api_key = st.secrets["youtube_key"] #st.text_input("Enter your YouTube API Key")
 # Function to get YouTube Shorts videos
 def get_youtube_short_videos(api_key, channel_id):
     youtube = build('youtube', 'v3', developerKey=api_key)
+    shorts = []
+    next_page_token = None
     
     try:
         request = youtube.search().list(
@@ -15,9 +17,13 @@ def get_youtube_short_videos(api_key, channel_id):
             channelId=channel_id,
             type="video",
             videoDuration="short",
-            maxResults=200
+            maxResults=50,
+            pageToken=next_page_token
         )
         response = request.execute()
+
+        shorts.extend(response['items'])
+        next_page_token = response.get('nextPageToken')
 
         videos = []
         for item in response['items']:
