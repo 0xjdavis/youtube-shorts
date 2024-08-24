@@ -27,8 +27,6 @@ def get_youtube_short_videos(api_key, channel_id):
 
     
 
-        return search
-
         videos = []
         for item in response['items']:
             video = {
