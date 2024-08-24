@@ -1,84 +1,65 @@
 import streamlit as st
-from googleapiclient.discovery import build
 import pandas as pd
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
-# Function to get SHORT videos from the YouTube channel
+# Function to get YouTube Shorts videos
 def get_youtube_short_videos(api_key, channel_id):
     youtube = build('youtube', 'v3', developerKey=api_key)
-    videos = []
-    next_page_token = None
     
-    while True:
+    try:
         request = youtube.search().list(
             part="snippet",
             channelId=channel_id,
-            maxResults=50,  # Maximum allowed value
-            order="date",
             type="video",
-            videoType="short",
-            pageToken=next_page_token
+            videoDuration="short",
+            maxResults=50
         )
         response = request.execute()
-        
+
+        videos = []
         for item in response['items']:
-            video_data = {
-                "Title": item['snippet']['title'],
-                "Published At": item['snippet']['publishedAt'],
-                "Video ID": item['id']['videoId'],
-                "Video Type": "SHORT"
+            video = {
+                'title': item['snippet']['title'],
+                'video_id': item['id']['videoId'],
+                'thumbnail': item['snippet']['thumbnails']['medium']['url'],
+                'published_at': item['snippet']['publishedAt']
             }
-            videos.append(video_data)
-        
-        next_page_token = response.get('nextPageToken')
-        if not next_page_token:
-            break
-    
-    return pd.DataFrame(videos)
+            videos.append(video)
 
-# Setting page layout
-st.set_page_config(
-    page_title="YouTube Channel Short Videos List",
-    page_icon="✨",
-    layout="centered",
-    initial_sidebar_state="expanded"
-)
+        return pd.DataFrame(videos)
+    except HttpError as e:
+        st.error(f"An error occurred: {e}")
+        return pd.DataFrame()
 
-# Sidebar for API Key and User Info
-st.sidebar.header("About App")
-st.sidebar.markdown('This app queries the YouTube API and returns a list of all SHORT videos for a particular YouTube channel. Created by <a href="https://ai.jdavis.xyz" target="_blank">0xjdavis</a>.', unsafe_allow_html=True)
+# Streamlit app
+st.title("YouTube Shorts Viewer")
 
-# Calendly
-st.sidebar.markdown("""
-    <hr />
-    <center>
-    <div style="border-radius:8px;padding:8px;background:#fff";width:100%;">
-    <img src="https://avatars.githubusercontent.com/u/98430977" alt="Oxjdavis" height="100" width="100" border="0" style="border-radius:50%"/>
-    <br />
-    <span style="height:12px;width:12px;background-color:#77e0b5;border-radius:50%;display:inline-block;"></span> <b>I'm available for new projects!</b><br />
-    <a href="https://calendly.com/0xjdavis" target="_blank"><button style="background:#126ff3;color:#fff;border: 1px #126ff3 solid;border-radius:8px;padding:8px 16px;margin:10px 0">Schedule a call</button></a><br />
-    </div>
-    </center>
-    <br />
-""", unsafe_allow_html=True)
+# Input fields
+api_key = st.text_input("Enter your YouTube API Key")
+channel_id = st.text_input("Enter the YouTube Channel ID")
 
-# Copyright
-st.sidebar.caption("©️ Copyright 2024 J. Davis")
-
-st.title("YouTube Channel Short Videos List")
-
-api_key = st.secrets["youtube_key"]
-channel_id = st.text_input("YouTube Channel ID", value="UCLRAP5fUb-OpHEiTryypa0g")
-
-if st.button("Get Short Videos"):
+if st.button("Fetch YouTube Shorts"):
     if api_key and channel_id:
         videos_df = get_youtube_short_videos(api_key, channel_id)
-        st.dataframe(videos_df)
-        csv = videos_df.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download as CSV",
-            data=csv,
-            file_name="youtube_short_videos.csv",
-            mime="text/csv",
-        )
+        
+        if not videos_df.empty:
+            st.success(f"Found {len(videos_df)} YouTube Shorts videos!")
+            
+            # Display videos in a grid
+            cols = st.columns(3)
+            for index, video in videos_df.iterrows():
+                with cols[index % 3]:
+                    st.image(video['thumbnail'], use_column_width=True)
+                    st.write(f"**{video['title']}**")
+                    st.write(f"Published: {video['published_at']}")
+                    video_url = f"https://www.youtube.com/shorts/{video['video_id']}"
+                    st.markdown(f"[Watch Video]({video_url})")
+        else:
+            st.warning("No YouTube Shorts videos found for this channel.")
     else:
-        st.error("Please provide both API Key and Channel ID.")
+        st.warning("Please enter both the API Key and Channel ID.")
+
+st.sidebar.header("About")
+st.sidebar.info("This app fetches and displays YouTube Shorts videos from a specified channel using the YouTube Data API.")
+st.sidebar.warning("Note: You need a valid YouTube API Key to use this app.")
