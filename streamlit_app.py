@@ -18,7 +18,8 @@ def get_playlists(channel_id):
                 part='snippet,contentDetails',
                 channelId=channel_id,
                 maxResults=50,
-                pageToken=next_page_token
+                pageToken=next_page_token,
+                videoType='SHORT'
             )
             response = request.execute()
 
