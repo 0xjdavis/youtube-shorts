@@ -27,9 +27,9 @@ def get_youtube_short_videos(api_key, channel_id):
 
         if not next_page_token:
             break
-    except HttpError as e:
-        st.error(f'An error occurred: {e}')
-        break
+        except HttpError as e:
+            st.error(f'An error occurred: {e}')
+            break
 
     return search
 
