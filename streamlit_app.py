@@ -3,9 +3,13 @@ import pandas as pd
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+
+
 # Function to get YouTube Shorts videos
 def get_youtube_short_videos(api_key, channel_id):
     youtube = build('youtube', 'v3', developerKey=api_key)
+    shorts = []
+    next_page_token = None
     
     try:
         request = youtube.search().list(
@@ -13,9 +17,13 @@ def get_youtube_short_videos(api_key, channel_id):
             channelId=channel_id,
             type="video",
             videoDuration="short",
-            maxResults=200
+            maxResults=200,
+            pageToken=next_page_token
         )
         response = request.execute()
+        
+        shorts.extend(response['items'])
+        next_page_token = response.get('nextPageToken')
 
         videos = []
         for item in response['items']:
@@ -39,16 +47,22 @@ st.title("YouTube Shorts Viewer")
 api_key = st.secrets["youtube_key"] #st.text_input("Enter your YouTube API Key")
 channel_id = st.text_input("YouTube Channel ID", value="UCLRAP5fUb-OpHEiTryypa0g")
 
-if st.button("Fetch YouTube Shorts"):
+if st.button("Get Shorts"):
     if api_key and channel_id:
         videos_df = get_youtube_short_videos(api_key, channel_id)
         
         if not videos_df.empty:
             st.success(f"Found {len(videos_df)} YouTube Shorts videos!")
-
             st.dataframe(videos_df)
             csv = videos_df.to_csv(index=False).encode('utf-8')
-            
+            st.download_button(
+                label="Download as CSV",
+                data=csv,
+                file_name="youtube_videos.csv",
+                mime="text/csv",
+            )
+        else:
+            st.error("Please provide both API Key and Channel ID.")
             # Display videos in a grid
             cols = st.columns(3)
             for index, video in videos_df.iterrows():
