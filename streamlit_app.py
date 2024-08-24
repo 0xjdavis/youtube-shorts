@@ -46,7 +46,7 @@ st.title("YouTube Shorts Viewer")
 
 # Sidebar
 st.sidebar.header("About")
-st.sidebar.info("This app fetches and displays YouTube Shorts videos from a specified channel using the YouTube Data API.")
+st.sidebar.write("This app fetches and displays YouTube Shorts videos from a specified channel using the YouTube Data API.")
 
 # Input fields
 channel_id = st.text_input("YouTube Channel ID", value="UCLRAP5fUb-OpHEiTryypa0g")
