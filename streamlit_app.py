@@ -37,7 +37,7 @@ st.title("YouTube Shorts Viewer")
 
 # Input fields
 api_key = st.secrets["youtube_key"] #st.text_input("Enter your YouTube API Key")
-channel_id = st.text_input("Enter the YouTube Channel ID")
+channel_id = st.text_input("YouTube Channel ID", value="UCLRAP5fUb-OpHEiTryypa0g")
 
 if st.button("Fetch YouTube Shorts"):
     if api_key and channel_id:
