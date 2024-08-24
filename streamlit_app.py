@@ -8,7 +8,7 @@ from googleapiclient.errors import HttpError
 # Function to get YouTube Shorts videos
 def get_youtube_short_videos(api_key, channel_id):
     youtube = build('youtube', 'v3', developerKey=api_key)
-    shorts = []
+    #shorts = []
     next_page_token = None
     
     try:
@@ -22,7 +22,7 @@ def get_youtube_short_videos(api_key, channel_id):
         )
         response = request.execute()
         
-        shorts.extend(response['items'])
+        #shorts.extend(response['items'])
         next_page_token = response.get('nextPageToken')
 
         videos = []
@@ -36,6 +36,7 @@ def get_youtube_short_videos(api_key, channel_id):
             videos.append(video)
 
         return pd.DataFrame(videos)
+        
     except HttpError as e:
         st.error(f"An error occurred: {e}")
         return pd.DataFrame()
