@@ -31,7 +31,7 @@ def get_youtube_short_videos(api_key, channel_id):
             #st.error(f'An error occurred: {e}')
             #break
 
-    return search
+        return search
 
         videos = []
         for item in response['items']:
