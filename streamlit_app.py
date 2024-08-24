@@ -73,9 +73,9 @@ if st.button("Get Shorts"):
                     video_url = f"https://www.youtube.com/shorts/{video['video_id']}"
                     st.markdown(f"[Watch Video]({video_url})")
 
-        
-        else:
-            st.warning("No YouTube Shorts videos found for this channel.")
+            
+            else:
+                st.warning("No YouTube Shorts videos found for this channel.")
     else:
         st.warning("Please enter both the API Key and Channel ID.")
 
