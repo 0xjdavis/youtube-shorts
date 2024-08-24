@@ -3,7 +3,7 @@ import json
 from googleapiclient.discovery import build
 
 # Replace with your API credentials and project ID
-API_KEY = st.secrets["youtube_key]
+API_KEY = st.secrets["youtube_key"]
 #PROJECT_ID = 'your_project_id'
 
 # Set up the YouTube API client
