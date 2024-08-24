@@ -1,8 +1,8 @@
-# 🎈 YouTube Playlists
+# 🎈 YouTube Shorts
 
-A simple Streamlit app that queries the YouTube API and list all playlists and the videos in those playlists for a particular YouTube Channel!
+A simple Streamlit app that queries the YouTube API and list all shorts for a particular YouTube Channel!
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://youtube-playlists.streamlit.app/)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://youtube-short.streamlit.app/)
 
 ### How to run it on your own machine
 
