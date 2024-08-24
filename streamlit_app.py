@@ -89,6 +89,7 @@ if st.button("Fetch YouTube Shorts"):
                     st.markdown(f"[Watch Video]({video_url})")
             
             # Download button for CSV
+            st.dataframe(videos_df)
             csv = videos_df.to_csv(index=False).encode('utf-8')
             st.download_button(
                 label="Download data as CSV",
