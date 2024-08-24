@@ -3,6 +3,8 @@ import pandas as pd
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+api_key = st.secrets["youtube_key"]
+
 # Function to get YouTube Shorts videos
 def get_youtube_short_videos(api_key, channel_id, max_results=100):
     youtube = build('youtube', 'v3', developerKey=api_key)
@@ -47,7 +49,6 @@ st.sidebar.header("About")
 st.sidebar.info("This app fetches and displays YouTube Shorts videos from a specified channel using the YouTube Data API.")
 
 # Input fields
-api_key = st.secrets["youtube_key"]
 channel_id = st.text_input("YouTube Channel ID", value="UCLRAP5fUb-OpHEiTryypa0g")
 max_results = st.number_input("Number of videos to fetch (max 500)", min_value=1, max_value=500, value=100)
 
