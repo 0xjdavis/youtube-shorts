@@ -82,7 +82,7 @@ if st.button("Fetch YouTube Shorts"):
             cols = st.columns(3)
             for index, video in videos_df.iterrows():
                 with cols[index % 3]:
-                    st.image(video['thumbnail'], use_column_width=True)
+                    st.image(video['thumbnail'], use_container_width=True)
                     st.write(f"**{video['title']}**")
                     st.write(f"Published: {video['published_at']}")
                     video_url = f"https://www.youtube.com/shorts/{video['video_id']}"
